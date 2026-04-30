@@ -1,0 +1,157 @@
+================================================================================
+                    EGESEL PERAKENDE - KURULUM KILAVUZU
+================================================================================
+
+Bu dosya, Egesel Perakende web sitesini cPanel hosting üzerine kurmanız için 
+gerekli adımları içermektedir.
+
+--------------------------------------------------------------------------------
+                              GEREKSINIMLER
+--------------------------------------------------------------------------------
+
+- PHP 7.4 veya üzeri (PHP 8.x önerilir)
+- MySQL 5.7 veya üzeri / MariaDB 10.x
+- Apache web sunucusu (mod_rewrite aktif)
+- cPanel erişimi
+
+--------------------------------------------------------------------------------
+                           KURULUM ADIMLARI
+--------------------------------------------------------------------------------
+
+ADIM 1: DOSYALARI YÜKLEYIN
+--------------------------
+1. cPanel'e giriş yapın
+2. File Manager'ı açın
+3. public_html klasörüne gidin
+4. Tüm dosyaları buraya yükleyin (ZIP olarak yükleyip Extract edebilirsiniz)
+
+Not: Eğer alt klasöre kurmak istiyorsanız (örn: siteadi.com/magaza), 
+     dosyaları o klasöre yükleyin.
+
+
+ADIM 2: VERITABANI OLUSTURUN
+----------------------------
+1. cPanel'de "MySQL Databases" bölümüne gidin
+2. Yeni bir veritabanı oluşturun (örn: kullaniciadi_egesel)
+3. Yeni bir kullanıcı oluşturun (örn: kullaniciadi_admin)
+4. Güçlü bir şifre belirleyin
+5. Kullanıcıyı veritabanına ekleyin ve TÜM YETKİLERİ verin
+
+
+ADIM 3: SQL DOSYASINI ICE AKTARIN
+---------------------------------
+1. cPanel'de "phpMyAdmin" bölümüne gidin
+2. Sol menüden oluşturduğunuz veritabanını seçin
+3. Üst menüden "Import" (İçe Aktar) sekmesine tıklayın
+4. "Choose File" ile "database.sql" dosyasını seçin
+5. "Go" butonuna tıklayın
+6. İşlem başarılı mesajını bekleyin
+
+
+ADIM 4: VERITABANI AYARLARINI YAPILANDIRIN
+------------------------------------------
+1. config/database.php dosyasını düzenleyin
+2. Aşağıdaki bilgileri kendi bilgilerinizle değiştirin:
+
+   define('DB_HOST', 'localhost');
+   define('DB_NAME', 'kullaniciadi_egesel');      // Veritabanı adınız
+   define('DB_USER', 'kullaniciadi_admin');        // Kullanıcı adınız
+   define('DB_PASS', 'sifreniz');                  // Şifreniz
+
+
+ADIM 5: SITE URL'SİNİ AYARLAYIN
+-------------------------------
+1. config/database.php dosyasında SITE_URL'yi güncelleyin:
+   
+   define('SITE_URL', 'https://siteadiniz.com');
+   
+   veya alt klasör kullanıyorsanız:
+   
+   define('SITE_URL', 'https://siteadiniz.com/magaza');
+
+
+ADIM 6: KLASÖR İZİNLERİNİ AYARLAYIN
+-----------------------------------
+1. cPanel File Manager'da aşağıdaki klasörlere 755 izni verin:
+   - assets/images/products
+   - assets/images/categories
+
+2. Bunu yapmak için: Klasöre sağ tıklayın > Change Permissions > 755
+
+
+ADIM 7: TEST EDIN
+-----------------
+1. Sitenizi tarayıcıda açın: https://siteadiniz.com
+2. Admin paneline gidin: https://siteadiniz.com/admin/giris.php
+3. Giriş bilgileri:
+   - Kullanıcı Adı: admin
+   - Şifre: admin
+
+!!! ÖNEMLİ: İlk girişten sonra admin şifresini mutlaka değiştirin!
+
+
+--------------------------------------------------------------------------------
+                          ADMIN PANEL KULLANIMI
+--------------------------------------------------------------------------------
+
+ADMIN GIRISI:
+URL: https://siteadiniz.com/admin/giris.php
+Kullanıcı Adı: admin
+Şifre: admin
+
+ADMIN PANEL ÖZELLİKLERİ:
+- Dashboard: Genel istatistikler
+- Ürünler: Ürün ekleme, düzenleme, silme
+- Kategoriler: Kategori yönetimi
+- Kullanıcılar: Müşteri hesaplarını yönetme (ekleme/silme)
+- Ayarlar: Site ayarları, WhatsApp numarası vb.
+
+
+--------------------------------------------------------------------------------
+                          WHATSAPP ENTEGRASYONU
+--------------------------------------------------------------------------------
+
+WhatsApp numaranızı değiştirmek için:
+1. Admin Panel > Ayarlar bölümüne gidin
+2. WhatsApp Numarası alanını güncelleyin
+3. Format: 05318741028 (başında 0 ile)
+
+
+--------------------------------------------------------------------------------
+                           ÖNEMLİ GÜVENLİK NOTLARI
+--------------------------------------------------------------------------------
+
+1. Admin şifresini hemen değiştirin
+2. config/database.php dosyasının web'den erişilemez olduğundan emin olun
+3. Düzenli yedek alın (veritabanı + dosyalar)
+4. SSL sertifikası kullanın (https)
+5. PHP sürümünü güncel tutun
+
+
+--------------------------------------------------------------------------------
+                              SORUN GIDERME
+--------------------------------------------------------------------------------
+
+HATA: "Veritabanı bağlantısı başarısız"
+ÇÖZÜM: config/database.php dosyasındaki bilgileri kontrol edin
+
+HATA: "Sayfa bulunamadı" hataları
+ÇÖZÜM: .htaccess dosyasının yüklendiğinden ve mod_rewrite'ın aktif olduğundan 
+       emin olun
+
+HATA: "Resim yüklenemiyor"
+ÇÖZÜM: assets/images/products klasörüne yazma izni (755) verin
+
+HATA: "Türkçe karakterler bozuk görünüyor"
+ÇÖZÜM: Veritabanı karakter setinin utf8mb4 olduğundan emin olun
+
+
+--------------------------------------------------------------------------------
+                               DESTEK
+--------------------------------------------------------------------------------
+
+Teknik destek için: WhatsApp - 0531 874 10 28
+
+================================================================================
+                    (c) 2024 Egesel Perakende - Tüm Hakları Saklıdır
+================================================================================
